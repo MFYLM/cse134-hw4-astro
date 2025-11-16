@@ -1,0 +1,87 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  slug: string;
+  tags: string[];
+}
+
+const { title, description, date, slug, tags } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class="blog-card">
+  <div class="card-content">
+    <h2>
+      <a href={`/blog/${slug}`}>{title}</a>
+    </h2>
+    <time datetime={date}>{formattedDate}</time>
+    <p>{description}</p>
+    <div class="tags">
+      {tags.map(tag => <Tag name={tag} />)}
+    </div>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background: var(--theme-card-bg);
+    border: 1px solid var(--theme-border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s, var(--theme-transition);
+    overflow: hidden;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  h2 a {
+    color: var(--theme-text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  h2 a:hover {
+    color: var(--theme-link-color);
+  }
+
+  time {
+    color: var(--theme-text-color);
+    opacity: 0.7;
+    font-size: 0.9rem;
+  }
+
+  p {
+    color: var(--theme-text-color);
+    opacity: 0.85;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+</style>

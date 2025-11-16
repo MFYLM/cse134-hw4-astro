@@ -1,0 +1,450 @@
+---
+// Theme Settings Component
+// Provides UI for selecting and customizing themes
+---
+
+<div id="theme-settings-container">
+  <!-- Theme Settings Button -->
+  <button id="theme-settings-button" class="theme-button" aria-label="Open theme settings">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
+    </svg>
+    Theme
+  </button>
+
+  <!-- Theme Settings Panel -->
+  <div id="theme-settings-panel" class="theme-panel hidden">
+    <div class="theme-panel-header">
+      <h3>Theme Settings</h3>
+      <button id="close-panel" class="close-button" aria-label="Close theme settings">&times;</button>
+    </div>
+
+    <div class="theme-panel-content">
+      <!-- Predefined Themes Section -->
+      <section class="theme-section">
+        <h4>Predefined Themes</h4>
+        <div class="theme-grid" id="predefined-themes">
+          <!-- Themes will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Custom Theme Section -->
+      <section class="theme-section">
+        <h4>Custom Theme</h4>
+        <div class="custom-controls">
+          <div class="control-group">
+            <label for="text-color-select">Text Color:</label>
+            <select id="text-color-select" class="theme-select">
+              <!-- Options populated by JavaScript -->
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="bg-color-select">Background Color:</label>
+            <select id="bg-color-select" class="theme-select">
+              <!-- Options populated by JavaScript -->
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="font-select">Font Style:</label>
+            <select id="font-select" class="theme-select">
+              <!-- Options populated by JavaScript -->
+            </select>
+          </div>
+
+          <button id="apply-custom-theme" class="apply-button">Apply Custom Theme</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="theme-overlay" class="overlay hidden"></div>
+</div>
+
+<style>
+  #theme-settings-container {
+    position: relative;
+  }
+
+  .theme-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .theme-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .theme-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .overlay.hidden {
+    display: none;
+  }
+
+  .theme-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: hidden;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .theme-panel.hidden {
+    display: none;
+  }
+
+  .theme-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .theme-panel-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #111827;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .close-button:hover {
+    background: #e5e7eb;
+  }
+
+  .theme-panel-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  .theme-section {
+    margin-bottom: 2rem;
+  }
+
+  .theme-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .theme-section h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: #374151;
+  }
+
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .theme-card {
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: white;
+  }
+
+  .theme-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  }
+
+  .theme-card.active {
+    border-color: #667eea;
+    background: #f0f4ff;
+  }
+
+  .theme-preview {
+    width: 100%;
+    height: 60px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .theme-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .custom-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .control-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .theme-select {
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .theme-select:hover {
+    border-color: #d1d5db;
+  }
+
+  .theme-select:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+
+  .apply-button {
+    padding: 0.75rem 1.5rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .apply-button:hover {
+    background: #5568d3;
+  }
+
+  @media (max-width: 640px) {
+    .theme-panel {
+      width: 95%;
+      max-height: 90vh;
+    }
+
+    .theme-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .theme-preview {
+      height: 50px;
+    }
+  }
+</style>
+
+<script>
+  import { THEMES, COLOR_OPTIONS, FONT_OPTIONS, saveTheme, getCurrentTheme, applyTheme } from '../../public/scripts/theme-config.js';
+
+  // DOM elements
+  const settingsButton = document.getElementById('theme-settings-button');
+  const settingsPanel = document.getElementById('theme-settings-panel');
+  const closeButton = document.getElementById('close-panel');
+  const overlay = document.getElementById('theme-overlay');
+  const predefinedThemesContainer = document.getElementById('predefined-themes');
+  const textColorSelect = document.getElementById('text-color-select');
+  const bgColorSelect = document.getElementById('bg-color-select');
+  const fontSelect = document.getElementById('font-select');
+  const applyCustomButton = document.getElementById('apply-custom-theme');
+
+  // Open panel
+  function openPanel() {
+    settingsPanel.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close panel
+  function closePanel() {
+    settingsPanel.classList.add('hidden');
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Populate predefined themes
+  function populatePredefinedThemes() {
+    const currentTheme = getCurrentTheme();
+    predefinedThemesContainer.innerHTML = '';
+
+    Object.values(THEMES).forEach(theme => {
+      const card = document.createElement('div');
+      card.className = 'theme-card';
+      if (currentTheme.name === theme.name && currentTheme.name !== 'Custom') {
+        card.classList.add('active');
+      }
+
+      const preview = document.createElement('div');
+      preview.className = 'theme-preview';
+      preview.style.backgroundColor = theme.backgroundColor;
+      preview.style.color = theme.textColor;
+      preview.textContent = 'Aa';
+
+      const name = document.createElement('div');
+      name.className = 'theme-name';
+      name.textContent = theme.name;
+
+      card.appendChild(preview);
+      card.appendChild(name);
+
+      card.addEventListener('click', () => {
+        saveTheme(theme.name);
+        applyTheme(theme);
+
+        // Dispatch custom event
+        window.dispatchEvent(new CustomEvent('themeChange', { detail: theme }));
+
+        // Update active state
+        document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+
+      predefinedThemesContainer.appendChild(card);
+    });
+  }
+
+  // Populate color and font selects
+  function populateSelects() {
+    // Text colors
+    textColorSelect.innerHTML = '';
+    Object.keys(COLOR_OPTIONS.text).forEach(colorName => {
+      const option = document.createElement('option');
+      option.value = colorName;
+      option.textContent = colorName;
+      textColorSelect.appendChild(option);
+    });
+
+    // Background colors
+    bgColorSelect.innerHTML = '';
+    Object.keys(COLOR_OPTIONS.background).forEach(colorName => {
+      const option = document.createElement('option');
+      option.value = colorName;
+      option.textContent = colorName;
+      bgColorSelect.appendChild(option);
+    });
+
+    // Fonts
+    fontSelect.innerHTML = '';
+    Object.keys(FONT_OPTIONS).forEach(fontName => {
+      const option = document.createElement('option');
+      option.value = fontName;
+      option.textContent = fontName;
+      fontSelect.appendChild(option);
+    });
+
+    // Set current values if custom theme is active
+    const currentTheme = getCurrentTheme();
+    if (currentTheme.name === 'Custom') {
+      textColorSelect.value = currentTheme.textColorName || 'Black';
+      bgColorSelect.value = currentTheme.backgroundColorName || 'White';
+      fontSelect.value = currentTheme.fontName || 'Sans Serif';
+    }
+  }
+
+  // Apply custom theme
+  function applyCustomTheme() {
+    const textColorName = textColorSelect.value;
+    const bgColorName = bgColorSelect.value;
+    const fontName = fontSelect.value;
+
+    const customTheme = {
+      name: 'Custom',
+      textColor: COLOR_OPTIONS.text[textColorName],
+      backgroundColor: COLOR_OPTIONS.background[bgColorName],
+      font: FONT_OPTIONS[fontName],
+      textColorName,
+      backgroundColorName: bgColorName,
+      fontName
+    };
+
+    saveTheme('Custom', customTheme);
+    applyTheme(customTheme);
+
+    // Dispatch custom event
+    window.dispatchEvent(new CustomEvent('themeChange', { detail: customTheme }));
+
+    // Update active state
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+  }
+
+  // Event listeners
+  settingsButton?.addEventListener('click', openPanel);
+  closeButton?.addEventListener('click', closePanel);
+  overlay?.addEventListener('click', closePanel);
+  applyCustomButton?.addEventListener('click', applyCustomTheme);
+
+  // Initialize
+  populatePredefinedThemes();
+  populateSelects();
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !settingsPanel.classList.contains('hidden')) {
+      closePanel();
+    }
+  });
+</script>

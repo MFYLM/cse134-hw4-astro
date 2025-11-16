@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About - TechBlog"
+  description="Learn more about TechBlog and our mission to share modern web development knowledge"
+>
+  <article class="about-content">
+    <h1>About TechBlog</h1>
+
+    <section class="intro">
+      <p>
+        Welcome to TechBlog, your premier destination for modern web development insights,
+        tutorials, and best practices. We're passionate about sharing knowledge and helping
+        developers build better, faster, and more accessible web applications.
+      </p>
+    </section>
+
+    <section class="mission">
+      <h2>Our Mission</h2>
+      <p>
+        Our mission is to demystify modern web development and make cutting-edge techniques
+        accessible to developers of all skill levels. We believe that by sharing knowledge
+        and fostering a community of learning, we can collectively push the boundaries of
+        what's possible on the web.
+      </p>
+    </section>
+
+    <section class="topics">
+      <h2>What We Cover</h2>
+      <ul>
+        <li><strong>Modern Frameworks:</strong> Deep dives into Astro, React, Vue, and other popular frameworks</li>
+        <li><strong>Performance Optimization:</strong> Techniques for building lightning-fast websites</li>
+        <li><strong>Static Site Generation:</strong> Leveraging SSG for better performance and SEO</li>
+        <li><strong>Web Standards:</strong> Staying up-to-date with the latest web platform features</li>
+        <li><strong>Best Practices:</strong> Component architecture, TypeScript, testing, and more</li>
+        <li><strong>CSS & Design:</strong> Modern styling approaches and responsive design patterns</li>
+      </ul>
+    </section>
+
+    <section class="technology">
+      <h2>Built with Astro</h2>
+      <p>
+        This blog is proudly built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>,
+        a modern static site generator that delivers exceptional performance by shipping zero JavaScript
+        by default. Astro's component-based architecture and partial hydration make it perfect for
+        content-heavy sites like blogs.
+      </p>
+      <div class="tech-features">
+        <div class="feature">
+          <h3>Fast by Default</h3>
+          <p>Astro renders pages to static HTML at build time, resulting in blazing-fast load times.</p>
+        </div>
+        <div class="feature">
+          <h3>Component Islands</h3>
+          <p>Add interactivity only where needed with Astro's partial hydration architecture.</p>
+        </div>
+        <div class="feature">
+          <h3>Framework Agnostic</h3>
+          <p>Use React, Vue, Svelte, or any other framework alongside Astro components.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2>Get In Touch</h2>
+      <p>
+        Have questions, suggestions, or topics you'd like us to cover? We'd love to hear from you!
+        Connect with us on social media or reach out through our contact channels.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #667eea;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e0e0e0;
+    line-height: 1.6;
+  }
+
+  ul li:last-child {
+    border-bottom: none;
+  }
+
+  .intro {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+  }
+
+  .tech-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .feature {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature h3 {
+    color: #667eea;
+    margin-top: 0;
+  }
+
+  .feature p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: #667eea;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .tech-features {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

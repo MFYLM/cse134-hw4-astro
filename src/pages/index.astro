@@ -1,16 +1,70 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { blogPosts } from '../data/blogPosts';
 
+// Blog posts data is imported from a shared module
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="TechBlog - Modern Web Development Insights">
+  <section class="hero">
+    <h1>Welcome to TechBlog</h1>
+    <p>Your source for modern web development insights and best practices</p>
+  </section>
+
+  <section class="blog-grid">
+    {blogPosts.map(post => (
+      <BlogCard
+        title={post.title}
+        description={post.description}
+        date={post.date}
+        slug={post.slug}
+        tags={post.tags}
+      />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: white;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.95;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

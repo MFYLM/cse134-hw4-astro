@@ -1,0 +1,27 @@
+---
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span class="tag">{name}</span>
+
+<style>
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--theme-link-color);
+    color: var(--theme-bg-color);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: var(--theme-transition);
+  }
+
+  .tag:hover {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/Tag.astro';
+import { blogPosts } from '../../data/blogPosts';
+
+// Blog posts data provided by import above
+
+export async function getStaticPaths() {
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout title={`${post.title} - TechBlog`} description={post.description}>
+  <article class="blog-post">
+    <header class="post-header">
+      <h1>{post.title}</h1>
+      <div class="post-meta">
+        <time datetime={post.date}>{formattedDate}</time>
+        <div class="tags">
+          {post.tags.map(tag => <Tag name={tag} />)}
+        </div>
+      </div>
+    </header>
+
+    <div class="post-content" set:html={post.content.trim().split('\n').map(line => {
+      // Simple markdown-to-HTML conversion for demonstration
+      if (line.startsWith('# ')) return `<h1>${line.slice(2)}</h1>`;
+      if (line.startsWith('## ')) return `<h2>${line.slice(3)}</h2>`;
+      if (line.startsWith('### ')) return `<h3>${line.slice(4)}</h3>`;
+      if (line.startsWith('- ')) return `<li>${line.slice(2)}</li>`;
+      if (line.startsWith('```')) return line.includes('```bash') ? '<pre><code class="language-bash">' : (line === '```' ? '</code></pre>' : '<pre><code>');
+      if (line.trim() === '') return '<br>';
+      return `<p>${line}</p>`;
+    }).join('\n')} />
+
+    <footer class="post-footer">
+      <a href="/" class="back-link">← Back to all posts</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .post-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  time {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .post-content {
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .post-content :global(h1) {
+    font-size: 2rem;
+    margin: 2rem 0 1rem 0;
+    color: #1a1a2e;
+  }
+
+  .post-content :global(h2) {
+    font-size: 1.7rem;
+    margin: 2rem 0 1rem 0;
+    color: #667eea;
+  }
+
+  .post-content :global(h3) {
+    font-size: 1.4rem;
+    margin: 1.5rem 0 0.75rem 0;
+    color: #1a1a2e;
+  }
+
+  .post-content :global(p) {
+    margin: 1rem 0;
+  }
+
+  .post-content :global(ul) {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+
+  .post-content :global(li) {
+    margin: 0.5rem 0;
+  }
+
+  .post-content :global(code) {
+    background: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+
+  .post-content :global(pre) {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .post-content :global(pre code) {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+  }
+
+  .back-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+
+  .back-link:hover {
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 768px) {
+    .post-header h1 {
+      font-size: 2rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
