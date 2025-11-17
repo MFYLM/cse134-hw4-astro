@@ -17,9 +17,11 @@ const { title, description = 'A modern tech blog built with Astro' } = Astro.pro
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="view-transition" content="same-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <script type="module" src="/scripts/theme-manager.js"></script>
+    <script type="module" src="/scripts/view-transitions.js"></script>
   </head>
   <body>
     <Header />
